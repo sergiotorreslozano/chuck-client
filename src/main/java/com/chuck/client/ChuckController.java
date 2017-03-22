@@ -38,6 +38,7 @@ public class ChuckController {
 	}
 
 	ChuckFact localFact(){
+		log.warn("Returning local fact...");
 		return new ChuckFact(-1, "Chuck is taking a rest...");
 	}
 
