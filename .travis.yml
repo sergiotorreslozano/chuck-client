@@ -1,0 +1,17 @@
+language: java
+jdk:
+- oraclejdk8
+services:
+  docker
+branches:
+  only:
+  - master
+script: mvn test -B -Dspring.profiles.active=test
+env:
+  global:
+     - COMMIT=${TRAVIS_COMMIT::6}
+     - REPO=$DOCKER_USERNAME/springboot-docker
+after_success:
+- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- docker build -t $REPO:$TRAVIS_BUILD_NUMBER .
+- docker push $REPO
