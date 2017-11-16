@@ -19,7 +19,7 @@ public class ChuckClient {
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	public static void main(String[] args) {
-		log.debug("Springbood Docker init");
+		log.debug("SpringBoot Docker init");
 		SpringApplication.run(ChuckClient.class, args);
 	}
 
