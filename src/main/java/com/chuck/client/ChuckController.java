@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
@@ -21,28 +20,13 @@ public class ChuckController {
 
 	private ChuckFactClient chuckFactClient;
 
-	private RestTemplate restTemplate;
-
-	ChuckController(ChuckFactClient chuckFactClient, RestTemplate restTemplate) {
+	ChuckController(ChuckFactClient chuckFactClient) {
 		this.chuckFactClient = chuckFactClient;
-	}
-
-	@RequestMapping("/")
-	public @ResponseBody String home() {
-		log.debug("Got a request!");
-		return "Hello World";
-	}
-
-	@HystrixCommand(fallbackMethod = "localFact")
-	@RequestMapping("/chuckJoke")
-	public @ResponseBody ChuckFact findRandomJoke() {
-		log.debug("Got a request!");
-		return restTemplate.getForEntity("getstartedlab_chuck-service", ChuckFact.class).getBody();
 	}
 
 	@HystrixCommand(fallbackMethod = "localFact")
 	@RequestMapping("/chuck")
-	public @ResponseBody ChuckFact greeting() {
+	public @ResponseBody ChuckFact findJoke() {
 		log.debug("Got a request!");
 		return chuckFactClient.randomFact();
 	}
@@ -64,9 +48,9 @@ class ChuckFact implements Serializable {
 		super();
 	}
 
-	public ChuckFact(int id, String string) {
+	public ChuckFact(int id, String fact) {
 		this.id = id;
-		this.fact = string;
+		this.fact = fact;
 	}
 
 	/**
@@ -85,7 +69,7 @@ class ChuckFact implements Serializable {
 
 }
 
-@FeignClient("getstartedlab_chuck-service")
+@FeignClient(url = "${chuck.service.url}", name = "ChuckFactClient")
 interface ChuckFactClient {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/chuck")
