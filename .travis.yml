@@ -11,7 +11,15 @@ env:
   global:
      - COMMIT=${TRAVIS_COMMIT::6}
      - REPO=$DOCKER_USERNAME/chuck-client
+before_install:
+# install heroku CLI
+- wget -qO- https://toolbelt.heroku.com/install.sh | sh
 after_success:
 - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 - docker build -t $REPO:$TRAVIS_BUILD_NUMBER .
 - docker push $REPO
+# Token from heroku auth:token
+- docker login -u "$HEROKU_USER" -p "$HEROKU_PASSWORD" registry.heroku.com
+- docker build -t registry.heroku.com/chuck-client/web .
+- docker push registry.heroku.com/chuck-client/web
+- heroku container:release web --app chuck-client
