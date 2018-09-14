@@ -55,6 +55,14 @@
             <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+        	<groupId>com.springboot.docker</groupId>
+        	<artifactId>chuck-service</artifactId>
+        	<version>0.1.0</version>
+        	<classifier>stubs</classifier>
+        	<scope>test</scope>
+        </dependency>
 
 
     </dependencies>
@@ -72,6 +80,14 @@
     </dependencyManagement>
 
 
+	<repositories>
+        <repository>
+            <id>myMavenRepoRead</id>
+            <url>${myMavenRepoReadUrl}</url>
+        </repository>
+    </repositories>
+
+
     <build>
         <plugins>
             <plugin>
@@ -80,5 +96,5 @@
             </plugin>
         </plugins>
     </build>
-
+    
 </project>

@@ -1,5 +1,6 @@
 package com.chuck.client;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -15,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureStubRunner(ids = {
-		"com.springboot.docker:chuck-service:+:stubs:8080" }, stubsMode = StubRunnerProperties.StubsMode.LOCAL)
+		"com.springboot.docker:chuck-service:0.1.0:stubs:8080" }, stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 public class ChuckJokesContractTest {
 
 	private RestTemplate restTemplate = new RestTemplate();
@@ -25,6 +26,8 @@ public class ChuckJokesContractTest {
 
 		ResponseEntity<ChuckFact> response = restTemplate.getForEntity("http://localhost:8080/chuck", ChuckFact.class);
 		assertTrue(response.getStatusCode().equals(HttpStatus.OK));
+		assertNotNull(response.getBody().getId());
+		assertNotNull(response.getBody().getFact());
 
 	}
 
