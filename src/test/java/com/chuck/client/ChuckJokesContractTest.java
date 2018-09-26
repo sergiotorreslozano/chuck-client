@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 		stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 public class ChuckJokesContractTest {
 
+	@LocalServerPort
+	private int port;
+
 	@Autowired
 	private TestRestTemplate restTemplate;
 
@@ -29,7 +33,7 @@ public class ChuckJokesContractTest {
 	public void shouldReturnAJoke() {
 
 		ResponseEntity<ChuckFact> response = restTemplate.getForEntity
-					("/chuck", ChuckFact.class);
+					("http://localhost:" +port +"/chuck", ChuckFact.class);
 		assertTrue(response.getStatusCode().equals(HttpStatus.OK));
 		assertNotNull(response.getBody().getId());
 		assertNotNull(response.getBody().getFact());
