@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejdk8:slim
+FROM openjdk:8-alpine
 VOLUME /tmp
 WORKDIR /app
 ADD /target/chuck-client-0.1.0.jar /app/app.jar
