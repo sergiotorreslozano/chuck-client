@@ -21,6 +21,8 @@ public class ChuckClient {
 		SpringApplication.run(ChuckClient.class, args);
 	}
 
+
+	
 }
 
 
