@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class ChuckController {
@@ -24,17 +23,12 @@ public class ChuckController {
 		this.chuckFactClient = chuckFactClient;
 	}
 
-	@HystrixCommand(fallbackMethod = "localFact")
 	@RequestMapping("/chuck")
 	public @ResponseBody ChuckFact findJoke() {
 		log.debug("Got a request!");
 		return chuckFactClient.randomFact();
 	}
 
-	ChuckFact localFact(){
-		log.warn("Returning local fact...");
-		return new ChuckFact(-1, "Chuck is taking a rest...");
-	}
 
 }
 
